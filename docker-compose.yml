@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: peterson
+    ports:
+      - 5432
+
+  jobs-db:
+    image: redis
+    command: redis-server
+    ports:
+      - 6379
+
+  web:
+    build: .
+    command: sh start.dev.sh
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: peterson
+      REDIS_URL: redis://jobs-db
+    volumes:
+      - .:/app
+      - gems:/usr/local/bundle
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - jobs-db
+
+volumes:
+  gems:
