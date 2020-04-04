@@ -24,6 +24,9 @@ Lint/RaiseException:
 RSpec/NestedGroups:
   Max: 8
 
+RSpec/ExampleLength:
+  Max: 12
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
