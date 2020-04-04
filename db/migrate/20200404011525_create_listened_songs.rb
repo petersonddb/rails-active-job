@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateListenedSongs < ActiveRecord::Migration[6.0]
   def change
     create_table :listened_songs do |t|
