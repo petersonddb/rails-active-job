@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_011525) do
+ActiveRecord::Schema.define(version: 2020_04_04_133812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "favorite_songs", force: :cascade do |t|
+    t.bigint "listener_id", null: false
+    t.bigint "song_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["listener_id"], name: "index_favorite_songs_on_listener_id"
+    t.index ["song_id"], name: "index_favorite_songs_on_song_id"
+  end
 
   create_table "listened_songs", force: :cascade do |t|
     t.bigint "listener_id", null: false
@@ -38,6 +47,8 @@ ActiveRecord::Schema.define(version: 2020_04_04_011525) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "favorite_songs", "songs"
+  add_foreign_key "favorite_songs", "users", column: "listener_id"
   add_foreign_key "listened_songs", "songs"
   add_foreign_key "listened_songs", "users", column: "listener_id"
 end
