@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_004108) do
+ActiveRecord::Schema.define(version: 2020_04_04_011525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "listened_songs", force: :cascade do |t|
+    t.bigint "listener_id", null: false
+    t.bigint "song_id", null: false
+    t.integer "times", default: 1, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["listener_id"], name: "index_listened_songs_on_listener_id"
+    t.index ["song_id"], name: "index_listened_songs_on_song_id"
+  end
 
   create_table "songs", force: :cascade do |t|
     t.string "name"
@@ -28,4 +38,6 @@ ActiveRecord::Schema.define(version: 2020_04_04_004108) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "listened_songs", "songs"
+  add_foreign_key "listened_songs", "users", column: "listener_id"
 end
