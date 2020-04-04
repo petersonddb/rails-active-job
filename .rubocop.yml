@@ -20,3 +20,10 @@ Lint/StructNewOverride:
 
 Lint/RaiseException:
   Enabled: true
+
+RSpec/NestedGroups:
+  Max: 8
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
