@@ -1,11 +1,13 @@
-# frozen_string_literal: true
+# frozen-string-literal: true
 
 class SetFavoriteSongJob < ApplicationJob
   queue_as :favorite_songs
 
   def perform
-    logger.info('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
-    logger.info('New favorite song defined!')
-    logger.info('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+    SetFavoriteSongJob.set(wait: 1.day).perform_later
+
+    User.all.each do |listener|
+      Songs::FavoriteSongIdentifier.new(listener).execute
+    end
   end
 end
