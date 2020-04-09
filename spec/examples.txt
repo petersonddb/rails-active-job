@@ -1,9 +1,0 @@
-example_id                                 | status | run_time        |
------------------------------------------- | ------ | --------------- |
-./spec/models/listened_song_spec.rb[1:1:1] | passed | 0.03452 seconds |
-./spec/models/listened_song_spec.rb[1:1:2] | passed | 0.02803 seconds |
-./spec/models/listened_song_spec.rb[1:2:1] | passed | 0.08055 seconds |
-./spec/models/listened_song_spec.rb[1:2:2] | passed | 0.02441 seconds |
-./spec/models/song_spec.rb[1:1:1]          | passed | 0.05349 seconds |
-./spec/models/song_spec.rb[1:1:2]          | passed | 0.30829 seconds |
-./spec/models/user_spec.rb[1:1:1]          | passed | 0.09944 seconds |
