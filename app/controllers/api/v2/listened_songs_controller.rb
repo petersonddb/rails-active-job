@@ -3,6 +3,8 @@
 module Api
   module V2
     class ListenedSongsController < ApplicationController
+      skip_forgery_protection only: :create
+
       def index
         @listened_songs = ListenedSong.all
 
