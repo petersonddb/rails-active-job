@@ -5,14 +5,6 @@ require 'rails_helper'
 RSpec.describe SetFavoriteSongJob, type: :job do
   subject(:perform_now) { described_class.perform_now }
 
-  it do
-    ActiveJob::Base.queue_adapter = :test
-
-    expect { perform_now }.to(
-      have_enqueued_job.on_queue('favorite_songs').exactly(:once)
-    )
-  end
-
   describe 'given some listeners' do
     let(:listeners) do
       (1..3).map do |number|
