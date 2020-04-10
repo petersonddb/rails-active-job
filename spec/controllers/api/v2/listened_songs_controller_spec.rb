@@ -58,6 +58,22 @@ RSpec.describe Api::V2::ListenedSongsController, type: :controller do
 
       it { is_expected.to have_http_status(:created) }
 
+      describe 'set favorite song identifier job' do
+        subject(:favorite_song_job) do
+          post_listened_songs
+
+          SetFavoriteSongJob
+        end
+
+        it do
+          ActiveJob::Base.queue_adapter = :test
+
+          expect(favorite_song_job).to(
+            have_been_enqueued.on_queue('favorite_songs').exactly(:once)
+          )
+        end
+      end
+
       describe 'response body' do
         subject(:response_body) do
           post_listened_songs

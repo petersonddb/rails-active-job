@@ -17,6 +17,8 @@ module Api
         @listened_song = ListenedSong.new(listened_song_params)
 
         if @listened_song.save
+          SetFavoriteSongJob.perform_later
+
           return render json: { id: @listened_song.id }, status: :created
         end
 
