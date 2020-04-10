@@ -14,9 +14,14 @@ module Api
       def create
         @listened_song = ListenedSong.new(listened_song_params)
 
-        return unless @listened_song.save
+        if @listened_song.save
+          return render json: { id: @listened_song.id }, status: :created
+        end
 
-        render json: { id: @listened_song.id }, status: :created
+        render(
+          json: { error: 'Validation failed!' },
+          status: :unprocessable_entity
+        )
       end
 
       private

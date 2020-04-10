@@ -23,12 +23,14 @@ RSpec.describe Api::V2::ListenedSongsController, type: :controller do
       it { is_expected.to have_http_status(:ok) }
 
       describe 'response body' do
-        it do
+        subject(:response_body) do
           get_listened_songs
 
-          expect(
-            JSON.parse(response.body, symbolize_names: true)
-          ).to match_array(
+          JSON.parse(response.body, symbolize_names: true)
+        end
+
+        it do
+          expect(response_body).to match_array(
             JSON.parse(listened_songs.to_json, symbolize_names: true)
           )
         end
@@ -57,28 +59,52 @@ RSpec.describe Api::V2::ListenedSongsController, type: :controller do
       it { is_expected.to have_http_status(:created) }
 
       describe 'response body' do
-        it 'is expected to have the listened song identification' do
+        subject(:response_body) do
           post_listened_songs
 
-          expect(
-            JSON.parse(response.body, symbolize_names: true)[:id]
-          ).to eq(ListenedSong.last.id)
+          JSON.parse(response.body, symbolize_names: true)
+        end
+
+        it 'is expected to have the listened song identification' do
+          expect(response_body[:id]).to eq(ListenedSong.last.id)
         end
       end
 
       describe 'created listened song' do
-        before { post_listened_songs }
+        subject(:created_listened_song) do
+          post_listened_songs
+
+          ListenedSong.last
+        end
 
         it 'is expected to have the correct listener' do
-          expect(ListenedSong.last.listener_id).to eq params[:listener_id]
+          expect(created_listened_song.listener_id).to eq params[:listener_id]
         end
 
         it 'is expected to have the correct song' do
-          expect(ListenedSong.last.song_id).to eq params[:song_id]
+          expect(created_listened_song.song_id).to eq params[:song_id]
         end
 
         it 'is expected to have the correct times' do
-          expect(ListenedSong.last.times).to eq params[:times]
+          expect(created_listened_song.times).to eq params[:times]
+        end
+      end
+    end
+
+    describe 'given invalid params' do
+      let(:params) { { listener: nil, song: nil, times: 0 } }
+
+      it { is_expected.to have_http_status(:unprocessable_entity) }
+
+      describe 'response body' do
+        subject(:response_body) do
+          post_listened_songs
+
+          JSON.parse(response.body, symbolize_names: true)
+        end
+
+        it 'is expected to have the correct error message' do
+          expect(response_body[:error]).to eq('Validation failed!')
         end
       end
     end
