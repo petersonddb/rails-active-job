@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     end
 
     scope module: :v2, constraints: Api::VersionValidator.new(2, true) do
-      resources :listened_songs, only: :index
+      resources :listened_songs, only: %i[index create]
     end
   end
 end
